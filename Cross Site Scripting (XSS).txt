@@ -1,0 +1,42 @@
+Cross Site Scripting (XSS):
+XSS nedir siteler arası komut veya dosya çalıştırmadır.
+Reflected XSS:
+    Saldırı gerçekleştirilir ama sadece bir istek yapılır
+Stored XSS:
+    Mağdurun tüm veritabanına kayıtlı bilgileri alır giriş çıkış , şifre vb.
+DOM XSS:
+    Kullanıcının tarayacısındaki DOM “environment” değiştirilmesi sonucu bilgiler çalınır.
+    Nasıl Korunuruz:
+        GÜVENLİ ama KIRIK örneği¶
+            var ESAPI = require('node-esapi');
+            var x = document.createElement("input");
+            x.setAttribute("name", "company_name");
+            // In the following line of code, companyName represents untrusted user input
+            // The ESAPI.encoder().encodeForHTMLAttribute() is unnecessary and causes double-encoding
+            x.setAttribute("value", '<%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForHTMLAttribute(companyName))%>');
+            var form1 = document.forms[0];
+            form1.appendChild(x);
+        GÜVENLİ ve İŞLEVSEL OLARAK DOĞRU örnek¶
+            var ESAPI = require('node-esapi');
+            var x = document.createElement("input");
+            x.setAttribute("name", "company_name");
+            x.setAttribute("value", '<%=ESAPI.encoder().encodeForJavascript(companyName)%>');
+            var form1 = document.forms[0];
+            form1.appendChild(x);
+        
+Blind Cross-site Scripting:
+    Yönetici veya kullanıcı linki çalıştırdırğı zaman bilgileri cookileri saldırgana geçiyor ama xss payloadın çalışıyormu çalışmıyormu bilemiyorsun
+XSS korunma (DOM Hariç):
+    https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html (Çok uzun olduğu için koymuyorum)
+
+XSS Saldırısı Sonuçları:
+    XSS saldırısı genellikle veri çalma üzerinedir veriler saklanır veya yansıtılır.
+
+
+Kaynakça:
+    https://owasp.org/www-community/attacks/xss/
+    https://owasp.org/www-project-web-security-testing-guide/
+    https://owasp.org/www-community/Types_of_Cross-Site_Scripting
+    https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+    https://owasp.org/www-community/Types_of_Cross-Site_Scripting
+    
